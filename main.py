@@ -69,37 +69,37 @@ def banner(console):
 def load_player_data(cpm):
     response = cpm.get_player_data()
 
-    if response.get("ok"):
-        data = response.get("data")
-
-        if all(key in data for key in ["floats", "localID", "money"]):
-
-            console.print(
-                "[bold][red]========[/red][ ᴘʟᴀʏᴇʀ ᴅᴇᴛᴀɪʟꜱ ][red]========[/red][/bold]"
-            )
-
-            console.print(
-                f"[bold white]   >> Name        : {data.get('Name', 'UNDEFINED')}[/bold white]"
-            )
-            console.print(
-                f"[bold white]   >> LocalID     : {data.get('localID', 'UNDEFINED')}[/bold white]"
-            )
-            console.print(
-                f"[bold white]   >> Moneys      : {data.get('money', 'UNDEFINED')}[/bold white]"
-            )
-            console.print(
-                f"[bold white]   >> Coins       : {data.get('coin', 'UNDEFINED')}[/bold white]"
-            )
-        else:
-            console.print(
-                "[bold red] '! ERROR: new accounts must be signed-in to the game at least once (✘)[/bold red]"
-            )
-            
-    else:
+    if not response.get("ok"):
         console.print(
-            "[bold red] '! ERROR: seems like your login is not properly set (✘)[/bold red]"
+            "[bold red]⚠️ WARNING: Your login seems to be invalid or misconfigured.[/bold red]"
         )
-    
+        data = {}
+    else:
+        data = response.get("data", {})
+
+    required_keys = {"floats", "localID", "money"}
+
+    if not required_keys.issubset(data):
+        console.print(
+            "[bold yellow]⚠️ WARNING: New accounts must log into the game at least once for full data to be available.[/bold yellow]"
+        )
+
+    console.print(
+        "[bold red]========[white] PLAYER DETAILS [/white]========[/bold red]"
+    )
+
+    console.print(
+        f"[bold white]   >> Name        : {data.get('Name', 'UNDEFINED')}[/bold white]"
+    )
+    console.print(
+        f"[bold white]   >> LocalID     : {data.get('localID', 'UNDEFINED')}[/bold white]"
+    )
+    console.print(
+        f"[bold white]   >> Moneys      : {data.get('money', 'UNDEFINED')}[/bold white]"
+    )
+    console.print(
+        f"[bold white]   >> Coins       : {data.get('coin', 'UNDEFINED')}[/bold white]"
+    )
 
 
 def load_key_data(cpm):
@@ -495,9 +495,7 @@ if __name__ == "__main__":
                         continue
                 else:
                     console.print("[bold red]FAILED[/bold red]")
-                    console.print(
-                        "[bold red] 'Please use valid values[/bold red]"
-                    )
+                    console.print("[bold red] 'Please use valid values[/bold red]")
                     sleep(2)
                     continue
             elif service == 3:  # King Rank
@@ -590,15 +588,11 @@ if __name__ == "__main__":
                         continue
                 else:
                     console.print("[bold red]FAILED[/bold red]")
-                    console.print(
-                        "[bold red] 'Please use valid values[/bold red]"
-                    )
+                    console.print("[bold red] 'Please use valid values[/bold red]")
                     sleep(2)
                     continue
             elif service == 6:  # Change Name Rainbow
-                console.print(
-                    "[bold red] '[?] Enter your new Rainbow Name[/bold red]"
-                )
+                console.print("[bold red] '[?] Enter your new Rainbow Name[/bold red]")
                 new_name = Prompt.ask("[?] Name")
                 console.print("[%] Saving your data: ", end=None)
                 if len(new_name) >= 0 and len(new_name) <= 999999999:
@@ -623,9 +617,7 @@ if __name__ == "__main__":
                         continue
                 else:
                     console.print("[bold red]FAILED[/bold red]")
-                    console.print(
-                        "[bold red] 'Please use valid values[/bold red]"
-                    )
+                    console.print("[bold red] 'Please use valid values[/bold red]")
                     sleep(2)
                     continue
             elif service == 7:  # Number Plates
@@ -1034,9 +1026,7 @@ if __name__ == "__main__":
                         continue
                 else:
                     console.print("[bold red]FAILED[/bold red]")
-                    console.print(
-                        "[bold red] '[!] Please use valid values[/bold red]"
-                    )
+                    console.print("[bold red] '[!] Please use valid values[/bold red]")
                     sleep(2)
                     continue
             elif service == 25:  # Change Races Loses
@@ -1073,15 +1063,11 @@ if __name__ == "__main__":
                         continue
                 else:
                     console.print("[bold red]FAILED[/bold red]")
-                    console.print(
-                        "[bold red] '[!] Please use valid values[/bold red]"
-                    )
+                    console.print("[bold red] '[!] Please use valid values[/bold red]")
                     sleep(2)
                     continue
             elif service == 26:  # Clone Account
-                console.print(
-                    "[bold red] '[!] Please Enter Account Detalis[/bold red]"
-                )
+                console.print("[bold red] '[!] Please Enter Account Detalis[/bold red]")
                 to_email = prompt_valid_value(
                     "[?] Account Email", "Email", password=False
                 )
@@ -1120,9 +1106,7 @@ if __name__ == "__main__":
                 new_inner_hp = IntPrompt.ask("[bold][?]Enter New Inner Hp[/bold]")
                 new_nm = IntPrompt.ask("[bold][?]Enter New NM[/bold]")
                 new_torque = IntPrompt.ask("[bold][?]Enter New Torque[/bold]")
-                console.print(
-                    "[bold red][%] Hacking Car Speed[/bold red]:", end=None
-                )
+                console.print("[bold red][%] Hacking Car Speed[/bold red]:", end=None)
                 if cpm.hack_car_speed(car_id, new_hp, new_inner_hp, new_nm, new_torque):
                     console.print("[bold green]SUCCESFUL (✔)[/bold green]")
                     console.print("================================")
@@ -1137,9 +1121,7 @@ if __name__ == "__main__":
                         continue
                 else:
                     console.print("[bold red]FAILED[/bold red]")
-                    console.print(
-                        "[bold red] '[!] Please use valid values[/bold red]"
-                    )
+                    console.print("[bold red] '[!] Please use valid values[/bold red]")
                     sleep(2)
                     continue
             elif service == 28:  # ANGLE
