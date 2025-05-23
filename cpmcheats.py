@@ -4,7 +4,7 @@ import requests
 import subprocess
 import urllib.parse
 
-__ENDPOINT_URL__: str = "https://cpmcheats.abccloud.com.br/api2"
+__ENDPOINT_URL__: str = "https://cpmcheats.hostzera.com.br/api2"
 
 class CPMCheats:
     def __init__(self, access_key) -> None:
